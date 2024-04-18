@@ -1,0 +1,153 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  fullName: String!
+  email: String!
+  roles: [String!]!
+  isActive: Boolean!
+  lastUpdateBy: User
+  itemCount: Int!
+  getItemsByUser(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
+  getListsByUser(offset: Int = 0, limit: Int = 10, search: String): [List!]!
+}
+
+type List {
+  id: ID!
+  name: String!
+  user: User!
+  items(offset: Int = 0, limit: Int = 10, search: String): [Listitem!]!
+  countListItemByList: Int!
+}
+
+type Listitem {
+  id: ID!
+  quantity: Int!
+  completed: Boolean!
+  list: List!
+  item: Item!
+}
+
+type Item {
+  id: ID!
+  name: String!
+  quantityUnits: String
+  user: User!
+  listItem: [Listitem!]!
+}
+
+type AuthResponse {
+  token: String!
+  user: User!
+}
+
+type Seed {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Query {
+  getAllItems(offset: Int = 0, limit: Int = 10, search: String): [Item!]!
+  item(id: ID!): Item!
+  users(roles: [ValidRoles!] = []): [User!]!
+  user(id: ID!): User!
+  lists(offset: Int = 0, limit: Int = 10, search: String): [List!]!
+  list(id: String!): List!
+  listitem(id: String!): Listitem!
+  revalidate: AuthResponse!
+  seed(id: Int!): Seed!
+}
+
+"""lorem ipsum dolorei"""
+enum ValidRoles {
+  admin
+  user
+  sperUser
+}
+
+type Mutation {
+  createItem(createItemInput: CreateItemInput!): Item!
+  updateItem(updateItemInput: UpdateItemInput!): Item!
+  removeItem(id: ID!): String!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  blockUser(id: ID!): User!
+  createList(createListInput: CreateListInput!): List!
+  updateList(updateListInput: UpdateListInput!): List!
+  removeList(id: String!): String!
+  createListItem(createListitemInput: CreateListitemInput!): Listitem!
+  updateListItem(updateListitemInput: UpdateListitemInput!): Listitem!
+  signup(signupInput: SignupInput!): AuthResponse!
+  login(loginInput: LoginInput!): AuthResponse!
+  executeSeed: Boolean!
+  createSeed(createSeedInput: CreateSeedInput!): Seed!
+  updateSeed(updateSeedInput: UpdateSeedInput!): Seed!
+  removeSeed(id: Int!): Seed!
+}
+
+input CreateItemInput {
+  name: String!
+  quantityUnits: String
+}
+
+input UpdateItemInput {
+  name: String
+  quantityUnits: String
+  id: ID!
+}
+
+input UpdateUserInput {
+  email: String
+  fullName: String
+  password: String
+  id: ID!
+  roles: [ValidRoles!]
+  isActive: Boolean
+}
+
+input CreateListInput {
+  name: String!
+}
+
+input UpdateListInput {
+  name: String
+  id: String!
+}
+
+input CreateListitemInput {
+  quantity: Int = 0
+  completed: Boolean = false
+  listId: ID!
+  itemId: ID!
+}
+
+input UpdateListitemInput {
+  quantity: Int = 0
+  completed: Boolean = false
+  listId: ID
+  itemId: ID
+  id: ID!
+}
+
+input SignupInput {
+  email: String
+  fullName: String
+  password: String
+}
+
+input LoginInput {
+  email: String
+  password: String
+}
+
+input CreateSeedInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateSeedInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
